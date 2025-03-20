@@ -3,7 +3,7 @@ FROM maven:3-openjdk-17 AS build
 WORKDIR /app
 COPY pom.xml .
 RUN mvn dependency:go-offline  # Tải trước dependencies để tăng tốc build
-COPY . .  # Sao chép tất cả các file vào container
+COPY . .
 RUN mvn clean package -DskipTests
 
 # Sử dụng OpenJDK để chạy ứng dụng
