@@ -2,7 +2,7 @@
 FROM maven:3-openjdk-17 AS build
 
 WORKDIR /app
-COPY . .
+COPY src .
 RUN mvn clean package -DskipTests
 
 # Sử dụng OpenJDK 17 để chạy ứng dụng
