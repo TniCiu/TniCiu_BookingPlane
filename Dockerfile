@@ -1,13 +1,22 @@
-# Sử dụng Maven để build ứng dụng
-FROM maven:3-openjdk-17 AS build
+# ===== BUILD STAGE =====
+FROM maven:3-eclipse-temurin-17 AS build
 WORKDIR /app
+
+# Cache dependencies
 COPY pom.xml .
-RUN mvn dependency:go-offline  # Tải trước dependencies để tăng tốc build
+RUN mvn dependency:go-offline
+
+# Copy source và build
 COPY . .
 RUN mvn clean package -DskipTests
 
-# Sử dụng OpenJDK để chạy ứng dụng
-FROM openjdk:17
+
+# ===== RUN STAGE =====
+FROM eclipse-temurin:17-jdk
 WORKDIR /app
+
 COPY --from=build /app/target/*.war app.war
+
+EXPOSE 8080
+
 CMD ["java", "-jar", "app.war"]
